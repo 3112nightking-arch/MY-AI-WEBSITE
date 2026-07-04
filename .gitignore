@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+._*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Runtime data (created automatically by app.py on startup)
+database.db
+Thumbs.db
+
+# Deployment build artifacts (see DEPLOY.md)
+deploy/
+oceanscience-deploy-*.zip

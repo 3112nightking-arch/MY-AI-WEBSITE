@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}
+Ocean Science & Surveying | Home
+{% endblock %}
+
+{% block content %}
+<!-- All the unique content for the HOME PAGE goes here -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This block can be overridden by child templates -->
+    <title>{% block title %}Ocean Science & Surveying{% endblock %}</title>
+
+    <!-- CSS and Fonts -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Use url_for to link to your own stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Scripts that need to be in the head -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js" defer></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body class="min-h-screen flex flex-col overflow-x-hidden bg-slate-900 text-slate-200">
+
+    <!-- NAVIGATION HEADER (from your index.html) -->
+    <header id="main-header" class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-500 rounded-full border border-gray-800/60 bg-[#0f172a]/80 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.5)] px-6 py-3 flex justify-between items-center">
+        <a href="{{ url_for('home') }}" class="relative z-10 flex items-center gap-3 cursor-pointer">
+            <img src="{{ url_for('static', filename='images/company logo/logo.PNG') }}" alt="Ocean Science Surveying Pvt. Ltd."
+                class="h-8 md:h-10 w-auto transition-all duration-300" id="header-logo">
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-8 relative z-10 text-sm font-medium">
+            <a href="{{ url_for('home') }}" class="nav-link text-cyan-400">Home</a>
+            
+            <!-- About Dropdown -->
+            <div class="group relative py-4">
+                <button class="flex items-center gap-1 hover:text-cyan-400 transition-colors">
+                    About <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i>
+                </button>
+                <div class="dropdown-menu absolute top-full left-0 w-52 bg-slate-800 border border-slate-700 shadow-2xl flex-col rounded-sm overflow-hidden mt-1">
+                    <a href="{{ url_for('company') }}" class="px-5 py-3.5 text-left text-gray-300 hover:text-cyan-400 hover:bg-white/[0.04] border-b border-slate-700/50">Company</a>
+                    <a href="{{ url_for('management') }}" class="px-5 py-3.5 text-left text-gray-300 hover:text-cyan-400 hover:bg-white/[0.04]">Management Team</a>
+                </div>
+            </div>
+
+            <a href="{{ url_for('services') }}" class="nav-link">Services</a>
+            <a href="{{ url_for('projects') }}" class="nav-link">Projects</a>
+            
+            <a href="{{ url_for('contact') }}" class="bg-transparent border border-cyan-500 text-white hover:bg-cyan-500 hover:text-slate-900 font-semibold py-2 px-6 rounded-full ml-4 transition-colors">Get in Touch</a>
+        </nav>
+
+        <button class="lg:hidden relative z-10 p-2 text-white" onclick="toggleMobileMenu()">
+            <i data-lucide="menu" id="menu-icon" class="w-7 h-7"></i>
+        </button>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow pt-24">
+        <!-- This is where the content of each individual page will be injected -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER (from your index.html) -->
+    <footer class="bg-[#020617] border-t border-slate-800/50 pt-20 pb-8 px-6 lg:px-16">
+        <div class="max-w-7xl mx-auto">
+            <!-- ... your full footer HTML goes here ... -->
+            <div class="text-center text-slate-500">
+                <p>&copy; 2026 Ocean Science & Surveying Pvt. Ltd. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Initialize AOS (Animate on Scroll)
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-out-cubic',
+            once: true,
+        });
+
+        // Basic mobile menu toggle
+        function toggleMobileMenu() {
+            // Your mobile menu logic would go here
+            console.log("Mobile menu toggled");
+        }
+    </script>
+    
+    <!-- A block for page-specific scripts -->
+    {% block scripts %}{% endblock %}
+
+</body>
+
+</html>
+
+```
+
+#### Step 2: Modify Child Templates (e.g., `index.html`)
+
+Now, you can simplify your other HTML files. They only need to contain the content that is unique to that page.
+
+At the top, you use `{% extends "base.html" %}`. Then, you define the `content` block to inject the page-specific HTML into the base template.
+
+```diff
+--- a/my_website/templates/index.html
++++ b/my_website/templates/index.html
