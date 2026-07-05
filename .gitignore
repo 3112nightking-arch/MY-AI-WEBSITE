@@ -15,3 +15,7 @@ Thumbs.db
 # Deployment build artifacts (see DEPLOY.md)
 deploy/
 oceanscience-deploy-*.zip
+
+# Deploy branch worktree (see update-deploy-branch.sh)
+.deploy-worktree/
+oceanscience-delta-*.zip

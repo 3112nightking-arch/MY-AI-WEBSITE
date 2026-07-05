@@ -1,48 +1,46 @@
 # Deploying to oceanscience.in
 
-The live site is **static hosting** on Windows IIS (Plesk), behind **Cloudflare**.
-The Flask backend (`app.py`) does not run there — it exists for local development only.
-The contact and RFQ forms work without it (they use `mailto:`); the footer quick-inquiry
-form falls back to a simulated success message on static hosting.
+**Deployment is Git-based via Plesk.** The Plesk panel (kd1.ctns.in) has the Git
+extension connected to this repository's **`deploy` branch** (read-only GitHub
+deploy key), deploying into the `httpdocs` webroot. The host is Windows IIS with
+PHP 8.2, behind Cloudflare. Domain email lives on Microsoft 365.
 
-## What gets deployed
+## Standard deploy flow
 
-Exactly three things, and nothing else:
+1. Commit and push changes to `main` as usual.
+2. Run `./update-deploy-branch.sh` — this syncs the webroot-only `deploy` branch
+   (INDEX.HTML with a cache-busted stylesheet ref, style.css, submit.php, IMAGES/)
+   and pushes it.
+3. In Plesk → the domain → Git: **Pull Updates**, then **Deploy** (or nothing, if
+   deployment mode is set to Automatic).
+4. Spot-check the live site, and test a form submission end to end (see below).
 
-| Item | Why |
-|---|---|
-| `INDEX.HTML` | The entire site (single page) |
-| `style.css` | Theme and component styles |
-| `IMAGES/` (whole folder) | All photos, logos (`IMAGES/CLIENTS/`), and service art |
+The `deploy` branch keeps app.py, docs/, README and all tooling off the public
+server. Rollback = point update-deploy-branch.sh at any older commit (checkout,
+run, push) and redeploy.
 
-**Never upload:** `app.py`, `requirements.txt`, `base.html`, `README.md`, `DEPLOY.md`,
-`make-deploy.sh`, `database.db`, `.git/`. On IIS these would be served as downloadable text.
+## Forms / email
 
-## Steps
+All three forms POST to `submit.php`, which sends via **Microsoft 365 direct
+send** (SMTP to the domain's MX endpoint — no local mail relay, no credentials).
+Recipient is configured at the top of submit.php (`mail@oceanscience.in`).
+If the endpoint fails, forms fall back to the visitor's mail client (mailto:).
 
-1. From the repo root, run:
-   ```bash
-   ./make-deploy.sh
-   ```
-   This builds a clean `deploy/` folder and a dated `oceanscience-deploy-*.zip`
-   (both are gitignored — they are build artifacts, not source).
+- After each deploy, submit a test inquiry and confirm it arrives (check Junk).
+- Deliverability improvement (pending): add `ip4:74.208.100.244` (the web
+  server) to the domain's SPF record in Cloudflare DNS so direct-send messages
+  pass SPF and stay out of Junk.
 
-2. Upload the **contents** of `deploy/` into the site's webroot via Plesk's File Manager
-   (or extract the zip there). Overwrite existing files. Make sure the new
-   `IMAGES/CLIENTS/` folder comes along — the client-logo wall depends on it.
+## Cloudflare notes
 
-3. **Purge the Cloudflare cache** (Cloudflare dashboard → Caching → Purge Everything),
-   or enable Development Mode while verifying. Without this, visitors can get a stale
-   mix of old and new files.
+- The stylesheet is cache-busted per deploy (`style.css?v=<commit>`), so no
+  manual cache purge is needed for CSS/HTML. New images are new URLs (uncached).
+  Only if an existing image is *replaced* under the same name is a purge needed
+  (Cloudflare dashboard → Caching → Purge; access currently held by the admin).
+- Email Routing in Cloudflare must stay OFF (MX belongs to Microsoft 365).
 
-4. Spot-check the live site: home page (dark theme), Company page (client logo wall),
-   Management Team grid, Projects service filter, and the Services page images.
+## Legacy manual method (fallback)
 
-## Notes
-
-- Cloudflare re-applies email obfuscation to `mailto:` links at serve time; that is
-  normal and requires no action.
-- Filenames in the repo are case-exact and lowercase-extension, so the bundle also works
-  on case-sensitive (Linux) hosting if the site ever moves.
-- Future improvement: a GitHub Action can push this same bundle to Plesk over FTPS on
-  every push to `main` (needs FTP credentials as GitHub secrets).
+`./make-deploy.sh` builds a full static bundle (deploy/ + zip) for manual upload
+through the Plesk File Manager — kept for emergencies or host migrations.
+Never upload: app.py, requirements.txt, base.html, README.md, docs/, tooling.

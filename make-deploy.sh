@@ -7,10 +7,14 @@ cd "$(dirname "$0")"
 rm -rf deploy
 mkdir -p deploy
 
-cp INDEX.HTML style.css deploy/
+cp INDEX.HTML style.css submit.php deploy/
 rsync -a --exclude='.DS_Store' --exclude='Thumbs.db' IMAGES/ deploy/IMAGES/
 
 STAMP=$(date +%Y%m%d-%H%M)
+
+# Cache-bust the stylesheet reference in the deployed copy so Cloudflare's edge
+# cache can't serve a stale theme after deploys (repo copy stays unstamped).
+sed -i '' "s|href=\"style.css\"|href=\"style.css?v=$STAMP\"|" deploy/INDEX.HTML
 ZIP="oceanscience-deploy-$STAMP.zip"
 rm -f oceanscience-deploy-*.zip
 (cd deploy && zip -qr "../$ZIP" .)
