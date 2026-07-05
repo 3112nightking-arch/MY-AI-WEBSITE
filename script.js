@@ -251,8 +251,8 @@ let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-        if (mapInitialized && projectsMap) projectsMap.resize();
-        if (contactMapInitialized && contactMap) contactMap.resize();
+        if (mapInitialized && projectsMap) projectsMap.invalidateSize();
+        if (contactMapInitialized && contactMap) contactMap.invalidateSize();
     }, 150);
 }, { passive: true });
 
@@ -739,8 +739,9 @@ function renderProjectsSidebar() {
             <div class="flex-grow">
                 <h3 class="text-sm font-bold text-white mb-1 leading-tight">${p.projectName}${currentBadge}</h3>
                 <p class="text-xs ${textColor} mb-3 font-semibold">${p.company}</p>
-                <div class="flex items-center text-[10px] text-gray-400 font-medium uppercase tracking-wider">
+                <div class="flex justify-between items-center text-[10px] text-gray-400 font-medium uppercase tracking-wider">
                     <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> ${p.country}</span>
+                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> ${(p.date || '').split(' ').pop()}</span>
                 </div>
             </div>
         </div>
@@ -751,102 +752,19 @@ function renderProjectsSidebar() {
 
 // Update Map Markers and Cluster Logic
 let arcLayers = [];
-let activePopup = null;
-
-// MapLibre raster styles configuration
-const darkStyle = {
-    version: 8,
-    sources: {
-        'raster-tiles': {
-            type: 'raster',
-            tiles: ['https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png'],
-            tileSize: 256,
-            attribution: '© CARTO, © OpenStreetMap'
-        }
-    },
-    layers: [{
-        id: 'raster-layer',
-        type: 'raster',
-        source: 'raster-tiles'
-    }]
-};
-
-const lightStyle = {
-    version: 8,
-    sources: {
-        'raster-tiles': {
-            type: 'raster',
-            tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'],
-            tileSize: 256,
-            attribution: '© CARTO, © OpenStreetMap'
-        }
-    },
-    layers: [{
-        id: 'raster-layer',
-        type: 'raster',
-        source: 'raster-tiles'
-    }]
-};
-
-const satelliteStyle = {
-    version: 8,
-    sources: {
-        'raster-tiles': {
-            type: 'raster',
-            tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
-            tileSize: 256,
-            attribution: 'Tiles © Esri'
-        }
-    },
-    layers: [{
-        id: 'raster-layer',
-        type: 'raster',
-        source: 'raster-tiles'
-    }]
-};
-
-let currentStyleName = 'dark';
-function changeMapStyle(styleName) {
-    if (!projectsMap) return;
-    currentStyleName = styleName;
-
-    // Update switcher buttons UI
-    const btnDark = document.getElementById('btn-style-dark');
-    const btnLight = document.getElementById('btn-style-light');
-    const btnSat = document.getElementById('btn-style-satellite');
-
-    if (btnDark && btnLight && btnSat) {
-        [btnDark, btnLight, btnSat].forEach(btn => {
-            btn.className = "px-2.5 py-1 rounded-full font-bold text-gray-400 hover:text-white transition-all";
-        });
-        if (styleName === 'dark') {
-            btnDark.className = "px-2.5 py-1 rounded-full font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-800/40 transition-all";
-        } else if (styleName === 'light') {
-            btnLight.className = "px-2.5 py-1 rounded-full font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-800/40 transition-all";
-        } else if (styleName === 'satellite') {
-            btnSat.className = "px-2.5 py-1 rounded-full font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-800/40 transition-all";
-        }
-    }
-
-    if (styleName === 'dark') {
-        projectsMap.setStyle(darkStyle);
-    } else if (styleName === 'light') {
-        projectsMap.setStyle(lightStyle);
-    } else if (styleName === 'satellite') {
-        projectsMap.setStyle(satelliteStyle);
-    }
-}
 
 function getBezierPoints(latlng1, latlng2, pointsCount = 30) {
     const lat1 = latlng1[0], lng1 = latlng1[1];
     const lat2 = latlng2[0], lng2 = latlng2[1];
 
+    // Calculate control point
     const midLat = (lat1 + lat2) / 2;
     const midLng = (lng1 + lng2) / 2;
 
+    // Offset perpendicular to the line
     const dist = Math.sqrt(Math.pow(lat2 - lat1, 2) + Math.pow(lng2 - lng1, 2));
-    const angle = Math.atan2(lat2 - lat1, lng2 - lng1) + Math.PI / 2;
-    const curvature = 0.25;
+    const angle = Math.atan2(lat2 - lat1, lng2 - lng1) + Math.PI / 2; // perpendicular
+    const curvature = 0.25; // height of curve
     const offset = dist * curvature;
 
     const ctrlLat = midLat + Math.sin(angle) * offset;
@@ -863,59 +781,52 @@ function getBezierPoints(latlng1, latlng2, pointsCount = 30) {
 }
 
 function drawConnectionArcs() {
-    updateSVGConnections();
-}
+    // Remove existing arcs
+    arcLayers.forEach(layer => {
+        if (projectsMap && layer) projectsMap.removeLayer(layer);
+    });
+    arcLayers = [];
 
-function updateSVGConnections() {
-    const svg = document.getElementById('map-svg-overlay');
-    if (!svg || !projectsMap) return;
+    if (!projectsMap) return;
 
-    // Clear previous paths
-    svg.innerHTML = '';
-
-    const hq = [73.0394, 19.0169]; // [lng, lat] for Mumbai Head Office
+    const hq = [19.0169, 73.0394]; // Mumbai Head Office coordinates
     const addedDestinations = new Set();
 
     filteredProjects.forEach(p => {
         if (!p.lat || !p.lng) return;
 
-        const dist = Math.sqrt(Math.pow(p.lat - hq[1], 2) + Math.pow(p.lng - hq[0], 2));
+        // Calculate distance in degrees
+        const dist = Math.sqrt(Math.pow(p.lat - hq[0], 2) + Math.pow(p.lng - hq[1], 2));
 
+        // Only draw arcs for projects that are far enough from Mumbai (> 2.5 degrees) to keep it clean
         if (dist > 2.5) {
             const destKey = `${p.lat.toFixed(2)},${p.lng.toFixed(2)}`;
-            if (addedDestinations.has(destKey)) return;
+            if (addedDestinations.has(destKey)) return; // Avoid duplicate lines to the same city
             addedDestinations.add(destKey);
 
-            const points = getBezierPoints([hq[1], hq[0]], [p.lat, p.lng]);
-            const pathData = points.map((pt, index) => {
-                const screenPt = projectsMap.project([pt[1], pt[0]]);
-                return `${index === 0 ? 'M' : 'L'}${screenPt.x.toFixed(1)} ${screenPt.y.toFixed(1)}`;
-            }).join('');
+            const points = getBezierPoints(hq, [p.lat, p.lng]);
+            const arc = L.polyline(points, {
+                color: '#22d3ee',
+                weight: 1.5,
+                opacity: 0.8,
+                className: 'glowing-arc'
+            }).addTo(projectsMap);
 
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            path.setAttribute('class', 'glowing-arc');
-            path.setAttribute('stroke', '#22d3ee');
-            path.setAttribute('stroke-opacity', '0.8');
-            path.setAttribute('stroke-width', '1.5');
-            path.setAttribute('stroke-linecap', 'round');
-            path.setAttribute('stroke-linejoin', 'round');
-            path.setAttribute('fill', 'none');
-            path.setAttribute('d', pathData);
-
-            svg.appendChild(path);
+            arcLayers.push(arc);
         }
     });
 }
 
 function updateMapMarkers() {
+    // Remove existing markers
     projectMarkers.forEach(marker => {
         if (marker) marker.remove();
     });
     projectMarkers = [];
 
-    const bounds = new maplibregl.LngLatBounds();
-    let hasCoordinates = false;
+    const markersForBounds = [];
 
+    // First gather projects by exact coordinates (rounded) so we can spread overlapping markers
     const coordBuckets = {};
     filteredProjects.forEach((p) => {
         if (p.lat && p.lng) {
@@ -926,9 +837,11 @@ function updateMapMarkers() {
         }
     });
 
+    // Helper to convert meters to degrees approximately
     function metersToLatDeg(m) { return m / 111320; }
     function metersToLngDeg(m, lat) { return m / (111320 * Math.cos(lat * Math.PI / 180)); }
 
+    // Create markers, applying a small deterministic spread for groups with more than one point
     Object.values(coordBuckets).forEach(group => {
         const groupSize = group.length;
         const baseLat = group[0].p.lat;
@@ -938,11 +851,20 @@ function updateMapMarkers() {
             const { p, originalIndex } = item;
             const isCurrent = p.date && p.date.includes('2026');
 
+            const icon = L.divIcon({
+                className: `custom-number-marker ${isCurrent ? 'current-project' : ''}`,
+                html: `<span>${originalIndex + 1}</span>`,
+                iconSize: [22, 22],
+                iconAnchor: [11, 11],
+                popupAnchor: [0, -11]
+            });
+
             let lat = p.lat;
             let lng = p.lng;
 
             if (groupSize > 1) {
-                const spacingMeters = 25;
+                // Spread points in a small circle so overlapping markers become visible
+                const spacingMeters = 25; // base spacing in meters
                 const radius = spacingMeters * (1 + Math.floor(idx / 6));
                 const angle = (idx * (360 / groupSize)) * (Math.PI / 180);
                 const dLat = Math.cos(angle) * radius;
@@ -951,41 +873,31 @@ function updateMapMarkers() {
                 lng = baseLng + metersToLngDeg(dLng, baseLat);
             }
 
-            const el = document.createElement('div');
-            el.className = `custom-number-marker ${isCurrent ? 'current-project' : ''}`;
-            el.innerHTML = `<span>${originalIndex + 1}</span>`;
+            const marker = L.marker([lat, lng], { icon: icon });
 
             const popupContent = `
-                <div style="max-width: 280px; padding: 4px; font-family: sans-serif; line-height: 1.4;">
-                    <h3 style="font-weight: bold; font-size: 16px; margin: 0 0 4px 0; color: #2dd4bf;">${p.projectName}</h3>
+                <div style="font-family: 'Outfit', sans-serif; max-width: 280px; padding: 4px;">
+                    <h3 style="font-weight: bold; font-size: 16px; margin: 0 0 4px 0; color: #06b6d4;">${p.projectName}</h3>
                     <p style="font-size: 12px; color: #d1d5db; margin: 0 0 12px 0; font-weight: 600; border-bottom: 1px solid #374151; padding-bottom: 8px;">${p.company}</p>
                     
                     <ul style="list-style: none; padding: 0; margin: 0 0 12px 0; font-size: 12px; display: flex; flex-direction: column; gap: 6px;">
                         <li><strong style="color: #9ca3af; width: 60px; display: inline-block;">Location:</strong> <span style="color: #ffffff;">${p.location}, ${p.country}</span></li>
                         <li><strong style="color: #9ca3af; width: 60px; display: inline-block;">Type:</strong> <span style="color: #ffffff;">${p.type}</span></li>
+                        <li><strong style="color: #9ca3af; width: 60px; display: inline-block;">Date:</strong> <span style="color: #ffffff;">${p.date}</span></li>
                     </ul>
                     
                     ${p.description ? `<p style="font-size: 12px; color: #e5e7eb; line-height: 1.5; margin: 0; padding-top: 8px; border-top: 1px solid #374151;">${p.description}</p>` : ''}
                 </div>
             `;
+            marker.bindPopup(popupContent);
 
-            const popup = new maplibregl.Popup({
-                offset: 15,
-                closeButton: true,
-                closeOnClick: true
-            }).setHTML(popupContent);
-
-            const marker = new maplibregl.Marker({ element: el })
-                .setLngLat([lng, lat])
-                .setPopup(popup)
-                .addTo(projectsMap);
-
+            marker.addTo(projectsMap);
+            markersForBounds.push(marker);
             projectMarkers[originalIndex] = marker;
-            bounds.extend([lng, lat]);
-            hasCoordinates = true;
         });
     });
 
+    // Adjust bounds if there are markers to display and a filter is active
     const searchInput = document.getElementById('project-search');
     const regionInput = document.getElementById('project-region-filter');
     const yearInput = document.getElementById('project-year-filter');
@@ -996,68 +908,58 @@ function updateMapMarkers() {
         (yearInput && yearInput.value !== '') ||
         (currentInput && currentInput.checked);
 
-    if (hasCoordinates) {
+    if (markersForBounds.length > 0) {
         if (isFiltered) {
+            const featureGroup = L.featureGroup(markersForBounds);
             const paddingLeft = window.innerWidth > 768 ? 450 : 50;
-            projectsMap.fitBounds(bounds, {
-                padding: { top: 50, bottom: 50, right: 50, left: paddingLeft },
-                maxZoom: 12,
-                duration: 1000
-            });
+            projectsMap.fitBounds(featureGroup.getBounds(), { paddingTopLeft: [paddingLeft, 50], paddingBottomRight: [50, 50], maxZoom: 12 });
         } else {
-            projectsMap.flyTo({
-                center: [20, 15],
-                zoom: 2,
-                duration: 1000
-            });
+            // For initial load / unfiltered state, show full world view
+            projectsMap.setView([15, 20], 2);
         }
     }
 
+    // Draw animated connection arcs
     drawConnectionArcs();
 }
 
+// Focus Specific Project from Sidebar Click
 function focusProject(index) {
     const marker = projectMarkers[index];
     if (marker) {
-        const lngLat = marker.getLngLat();
-        projectsMap.flyTo({
-            center: lngLat,
-            zoom: 12,
-            duration: 1000
-        });
-        
-        setTimeout(() => {
-            marker.togglePopup();
-        }, 1000);
+        projectsMap.setView(marker.getLatLng(), 12, { animate: true, duration: 1 })
+        setTimeout(() => marker.openPopup(), 500);
     }
 }
 
+// Initialize Leaflet Map
 function initProjectsMap() {
     if (mapInitialized) {
-        if (projectsMap) projectsMap.resize();
+        projectsMap.invalidateSize();
         return;
     }
 
-    projectsMap = new maplibregl.Map({
-        container: 'projects-map',
-        style: darkStyle,
-        center: [20, 15],
-        zoom: 2,
-        minZoom: 1.5,
+    projectsMap = L.map('projects-map', {
+        minZoom: 2,
         maxZoom: 18,
-        attributionControl: false
-    });
+        zoomControl: false,
+        maxBounds: [
+            [-85, -180],
+            [85, 180]
+        ],
+        maxBoundsViscosity: 0.5
+    }).setView([15, 20], 2);
 
-    projectsMap.addControl(new maplibregl.NavigationControl({
-        showCompass: false
-    }), 'bottom-right');
+    // Add zoom control to bottom right so it's not hidden by sidebar
+    L.control.zoom({ position: 'bottomright' }).addTo(projectsMap);
 
-    projectsMap.on('style.load', () => {
-        drawConnectionArcs();
-    });
-    projectsMap.on('move', updateSVGConnections);
-    projectsMap.on('zoom', updateSVGConnections);
-    projectsMap.on('resize', updateSVGConnections);
+    // Add a premium, fast light-themed tile layer (CartoDB Positron)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20,
+        noWrap: true
+    }).addTo(projectsMap);
 
     filteredProjects = [...projectsData];
     updateMapMarkers();
@@ -1117,11 +1019,13 @@ function switchContactForm(mode) {
     if (mode === 'message') {
         if (indicator) indicator.style.transform = 'translateX(0)';
         if (msgBtn) {
-            msgBtn.classList.add('active', 'text-[#06231f]');
-            msgBtn.classList.remove('text-slate-400', 'text-white');
+            msgBtn.classList.add('active');
+            msgBtn.classList.remove('text-slate-400');
+            msgBtn.classList.add('text-white');
         }
         if (rfqBtn) {
-            rfqBtn.classList.remove('active', 'text-[#06231f]', 'text-white');
+            rfqBtn.classList.remove('active');
+            rfqBtn.classList.remove('text-white');
             rfqBtn.classList.add('text-slate-400');
         }
         if (msgWrapper) msgWrapper.classList.remove('hidden');
@@ -1129,11 +1033,13 @@ function switchContactForm(mode) {
     } else {
         if (indicator) indicator.style.transform = 'translateX(calc(100% - 4px))';
         if (rfqBtn) {
-            rfqBtn.classList.add('active', 'text-[#06231f]');
-            rfqBtn.classList.remove('text-slate-400', 'text-white');
+            rfqBtn.classList.add('active');
+            rfqBtn.classList.remove('text-slate-400');
+            rfqBtn.classList.add('text-white');
         }
         if (msgBtn) {
-            msgBtn.classList.remove('active', 'text-[#06231f]', 'text-white');
+            msgBtn.classList.remove('active');
+            msgBtn.classList.remove('text-white');
             msgBtn.classList.add('text-slate-400');
         }
         if (msgWrapper) msgWrapper.classList.add('hidden');

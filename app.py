@@ -3,7 +3,7 @@ import sqlite3
 import gzip
 import io
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, make_response # type: ignore
+from flask import Flask, render_template, request, jsonify, make_response
 
 app = Flask(__name__, template_folder='.', static_folder='.', static_url_path='')
 

@@ -21,6 +21,7 @@ style.css          Site styles
 script.js          Site interactivity
 IMAGES/            Image assets (case studies, team, services, news, logos)
 database.db        SQLite database (created automatically on first run; not committed)
+docs/              Reference documents (not deployed) — company profile / historical client list
 ```
 
 ## Running locally
