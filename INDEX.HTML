@@ -411,7 +411,7 @@
 
         <!-- Logo and company name -->
         <div class="preloader-logo-wrap">
-            <img src="./IMAGES/company logo/OceanScience-logo.png" alt="Ocean Science & Surveying" class="preloader-logo">
+            <img src="./IMAGES/company logo/OceanScience-logo-white.png" alt="Ocean Science & Surveying" class="preloader-logo">
             <div class="preloader-company-name">Ocean Science & Surveying</div>
             <div class="preloader-tagline">Precision in Every Depth</div>
         </div>
@@ -431,7 +431,7 @@
     <header id="main-header"
         class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-500 rounded-full border border-slate-800/70 bg-slate-950/75 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] px-6 py-2.5 flex justify-between items-center hover:border-slate-700/80 hover:shadow-[0_12px_45px_rgba(6,182,212,0.15)]">
         <div class="relative z-10 flex items-center gap-3 cursor-pointer group/logo" onclick="navigateTo('home')">
-            <img src="./IMAGES/company logo/OceanScience-logo.png" alt="Ocean Science Surveying Pvt. Ltd."
+            <img src="./IMAGES/company logo/OceanScience-logo-white.png" alt="Ocean Science Surveying Pvt. Ltd."
                 class="h-[62px] md:h-[76px] w-auto transition-transform duration-300 group-hover/logo:scale-105"
                 id="header-logo">
         </div>
@@ -836,12 +836,12 @@
 
         <!-- HOME PAGE -->
         <section id="page-home" class="page-content active">
-            <div id="hero-slider" class="relative min-h-screen overflow-x-hidden pb-[220px] md:pb-[150px]">
+            <div id="hero-slider" class="relative overflow-x-hidden pb-0 md:pb-[150px]">
                 <!-- Slides Container -->
-                <div id="slides-container" class="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+                <div id="slides-container" class="flex transition-transform duration-700 ease-in-out"
                     style="transform: translateX(0%);">
                     <!-- Slide 1 -->
-                    <div class="w-full flex-shrink-0 h-full relative active-slide">
+                    <div class="w-full flex-shrink-0 relative active-slide">
                         <div class="hero-slide-bg absolute inset-0 z-0 bg-cover bg-center"
                             data-bg="./IMAGES/HOME/89989898.png"
                             style="background-image: url('./IMAGES/HOME/89989898.png');">
@@ -849,7 +849,7 @@
                                 class="absolute inset-0 bg-gradient-to-r from-[#242424]/95 via-[#242424]/50 to-transparent">
                             </div>
                         </div>
-                        <div class="relative z-10 flex flex-col justify-center px-6 lg:px-16 h-full pt-24 pb-12">
+                        <div class="relative z-10 flex flex-col justify-start md:justify-center px-6 lg:px-16 min-h-[100svh] pt-28 md:pt-24 pb-10">
                             <div class="max-w-4xl">
                                 <div class="flex items-center gap-4 mb-8">
                                     <div class="w-12 h-[2px] bg-[#ff6b00]"></div>
@@ -863,7 +863,7 @@
                                     <span class="text-gray-400 block">Enabling the marine</span>
                                     <span class="text-gray-400 block">economy.</span>
                                 </h1>
-                                <p class="text-gray-300 text-sm md:text-base max-w-xl pr-8 mb-12 leading-relaxed">
+                                <p class="text-gray-300 text-sm md:text-base max-w-xl pr-8 mb-8 md:mb-12 leading-relaxed">
                                     Delivering high-resolution hydrographic, geophysical, and geotechnical data for
                                     critical offshore infrastructure across 22 countries.</p>
                                 <div class="flex flex-col sm:flex-row gap-4">
@@ -878,14 +878,14 @@
                         </div>
                     </div>
                     <!-- Slide 2 -->
-                    <div class="w-full flex-shrink-0 h-full relative active-slide">
+                    <div class="w-full flex-shrink-0 relative active-slide">
                         <div class="hero-slide-bg absolute inset-0 z-0 bg-cover bg-center"
                             data-bg="./IMAGES/HOME/7559391310.png">
                             <div
                                 class="absolute inset-0 bg-gradient-to-r from-[#242424]/95 via-[#242424]/50 to-transparent">
                             </div>
                         </div>
-                        <div class="relative z-10 flex flex-col justify-center px-6 lg:px-16 h-full pt-24 pb-12">
+                        <div class="relative z-10 flex flex-col justify-start md:justify-center px-6 lg:px-16 min-h-[100svh] pt-28 md:pt-24 pb-10">
                             <div class="max-w-4xl">
                                 <div class="flex items-center gap-4 mb-8">
                                     <div class="w-12 h-[2px] bg-[#ff6b00]"></div>
@@ -899,7 +899,7 @@
                                     <span class="text-gray-400 block">the Marine</span>
                                     <span class="text-gray-400 block">Industry.</span>
                                 </h1>
-                                <p class="text-gray-300 text-sm md:text-base max-w-xl pr-8 mb-12 leading-relaxed">
+                                <p class="text-gray-300 text-sm md:text-base max-w-xl pr-8 mb-8 md:mb-12 leading-relaxed">
                                     Ocean Science & Surveying Pvt. Ltd. provides comprehensive Offshore surveying and
                                     support for a variety of sectors, dedicated to creating a safer world.</p>
                                 <div class="flex flex-col sm:flex-row gap-4">
@@ -2033,9 +2033,6 @@
                         class="relative z-10 w-full sm:w-1/2 py-4 text-center transition-all duration-300 flex justify-center items-center gap-3 rounded-xl uppercase text-slate-400 border border-transparent hover:bg-white/5">
                         <i data-lucide="monitor" class="w-5 h-5"></i> Software Suite
                     </button>
-                    <div id="resource-toggle-indicator"
-                        class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-[#0f172a] border border-[#22d3ee]/50 rounded-full transition-transform duration-300 shadow-[0_0_15px_rgba(6,182,212,0.2)] pointer-events-none">
-                    </div>
                 </div>
             </div>
 
@@ -2957,10 +2954,10 @@
                         </div>
 
                         <div class="relative z-10">
-                            <h2 class="text-4xl md:text-5xl font-black mb-6 text-[var(--site-text)] text-center">Send a
+                            <h2 class="text-4xl md:text-5xl font-black mb-6 text-slate-900 text-center">Send a
                                 Message</h2>
                             <p
-                                class="text-[var(--site-muted)] text-lg mb-12 leading-relaxed text-center max-w-2xl mx-auto font-medium">
+                                class="text-slate-600 text-lg mb-12 leading-relaxed text-center max-w-2xl mx-auto font-medium">
                                 Describe your project requirements below, and our engineering team will get back to you
                                 with a comprehensive plan.</p>
 
@@ -3016,10 +3013,10 @@
                         </div>
 
                         <div class="relative z-10">
-                            <h2 class="text-4xl md:text-5xl font-black mb-4 text-[var(--site-text)] text-center">RFQ
+                            <h2 class="text-4xl md:text-5xl font-black mb-4 text-slate-900 text-center">RFQ
                                 Survey Builder</h2>
                             <p
-                                class="text-[var(--site-muted)] text-lg mb-12 leading-relaxed text-center font-medium max-w-2xl mx-auto">
+                                class="text-slate-600 text-lg mb-12 leading-relaxed text-center font-medium max-w-2xl mx-auto">
                                 Build your project quote survey query. Answer 4 steps for a comprehensive B2B bid
                                 request.</p>
 
@@ -3313,7 +3310,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
                 <!-- Branding Column -->
                 <div class="lg:col-span-4 space-y-6">
-                    <img src="./IMAGES/company logo/OceanScience-logo.png" alt="Ocean Science Surveying"
+                    <img src="./IMAGES/company logo/OceanScience-logo-white.png" alt="Ocean Science Surveying"
                         class="h-[60px] w-auto">
                     <p class="text-slate-400 text-sm leading-relaxed max-w-sm">
                         Decoding the seabed. Enabling the marine economy with high-resolution hydrographic, geophysical,
