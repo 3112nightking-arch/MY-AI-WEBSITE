@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+._*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Runtime data (created automatically by app.py on startup)
+database.db
+Thumbs.db
+
+# Deployment build artifacts (see DEPLOY.md)
+deploy/
+oceanscience-deploy-*.zip
+
+# Deploy branch worktree (see update-deploy-branch.sh)
+.deploy-worktree/
+oceanscience-delta-*.zip
+
+# Claude Code local/config (keep commands/ tracked)
+.claude/launch.json
+.claude/settings.local.json
