@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sqlite3
 import gzip
 import io
@@ -370,6 +370,7 @@ def admin_dashboard():
         return make_response(html_content)
     except Exception as e:
         return f"<h3>Admin Dashboard Error: {str(e)}</h3>", 500
+
 
 if __name__ == '__main__':
     # PORT override useful on macOS where AirPlay occupies port 5000

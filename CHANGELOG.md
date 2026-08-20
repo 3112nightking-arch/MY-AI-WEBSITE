@@ -1,7 +1,7 @@
 # Ocean Science Website — Change Log
 
 All changes to the website since the GitHub repository was established, grouped by area.
-Covers **3–5 July 2026** (64 commits). The site is a single-page app (`INDEX.HTML` +
+Covers **3–7 July 2026**. The site is a single-page app (`INDEX.HTML` +
 `style.css`), deployed to oceanscience.in via Plesk's Git integration.
 
 ---
@@ -37,6 +37,10 @@ Went from "files on an SSD" to a fully automated push-to-deploy pipeline.
 - **Client logo wall** — hosted all 20 partner logos locally (previously hotlinked and
   several broken), normalized them to a uniform size on adaptive light/dark chips, fixed
   the 5 broken ones, and regenerated the Veripos logo at 2× resolution.
+- **Logo artwork refresh** — swapped in updated wordmark files: a white-transparent version
+  on dark surfaces (header, nav, preloader, footer) and a cyan-on-white version on the light
+  product cards, with the "C" globe-emblem in its grey-silver metallic gradient. Full brand
+  kit (transparent, cyan-on-white, and navy-chip variants) kept in the repo.
 
 ## 3. Projects Page & Interactive Map
 
@@ -73,6 +77,12 @@ Built the Projects data from 216 loosely-tagged entries into a verified 20-year 
   Cable Owners, etc.).
 - **Standalone exports** — the full dataset is exported to `docs/projects.json` and
   `docs/projects.csv` for use outside the website.
+- **Authoritative rebuild (Annexure B)** — reconciled every project row against the company's
+  revised Annexure B dataset: fixed 16 client names that had been reduced to bare "Ltd."/
+  "Limited" fragments, corrected work-text that had shifted or fused between adjacent rows,
+  dropped 4 misdated duplicates, and re-derived map coordinates from the corrected descriptions.
+  The verified record now stands at **341 projects** (down from 345 after de-duplication), with
+  exports regenerated to match.
 
 ## 5. Management Team Page
 
@@ -83,6 +93,8 @@ Built the Projects data from 216 loosely-tagged entries into a verified 20-year 
   12 members' email addresses and 11 of 12 verified LinkedIn profiles.
 - **Titles & names** — applied display-name and title corrections (Chairman & MD, Director
   titles, GM/DGM titles) and fixed casing.
+- **Leadership quote** — Cdr. Tyagi's quote changed from "For over 25 years…" to "For over two
+  decades…" to match the corrected 20-year experience claim.
 
 ## 6. News & Content
 
@@ -108,6 +120,11 @@ Moved from "hope the visitor sends an email" to real server-side lead collection
   legacy `mailto:` flow automatically if the endpoint is unavailable.
 - **Spam protection** — a hidden honeypot field plus a fails-safe per-IP rate limit
   (5 submissions/hour), using the real visitor IP from behind Cloudflare.
+- **Get in Touch readability** — darkened light-grey-on-white text across the contact page:
+  the RFQ wizard's step headings and field labels, the contact-form labels, the info cards
+  (Headquarters / Email / Call), and the map-marker popup address (rebuilt to a solid white
+  popup with dark text). Raised the contact hero's background GIF from barely-visible (10%) to
+  clearly visible (40%) while keeping the headline legible.
 
 ## 9. Analytics
 
@@ -127,6 +144,8 @@ Moved from "hope the visitor sends an email" to real server-side lead collection
   since the original import) from the live site.
 - **Footer cleanup** — hid the non-functional X (Twitter) button, wired to re-enable when a
   profile URL exists.
+- **Experience claim** — corrected the homepage stat from "25+ Years of Experience" to "20+"
+  (counter and the "Years of Excellence" eyebrow), matching the "over two decades" body copy.
 
 ---
 

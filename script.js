@@ -1,4 +1,4 @@
-// DATA ARRAYS
+﻿// DATA ARRAYS
 const services = [
     { id: '01', title: 'Bathymetry Survey', overview: 'A bathymetric survey is the process of mapping the seafloor. It involves collecting data to measure the depth of water and to chart the underwater topography. This data is essential for various applications, including navigation, coastal engineering, and marine science.', caps: ['MBES surveys', 'Singlebeam profiles', 'Volume computation', 'Channel monitoring'], img: './IMAGES/SERVICE IMAGE/Bathymetry Survey IMG.PNG', icon: 'target' },
     { id: '02', title: 'Geophysical Survey', overview: 'Geophysical surveys are a vital tool for locating and mapping objects and features buried underground or underwater without the need for excavation.', caps: ['Side-Scan Sonar Surveys', 'Sub-Bottom profiling', 'Geohazard Identification', 'Cable route surveys'], img: './IMAGES/SERVICE IMAGE/Geophysical Surveys.PNG', icon: 'zap' },
@@ -977,6 +977,12 @@ window.onload = () => {
         renderCareers();
         renderResources();
 
+        // Setup AI Chat
+        const aiChatForm = document.getElementById('ai-chat-form');
+        if (aiChatForm) {
+            aiChatForm.addEventListener('submit', handleAiChatSubmit);
+        }
+
         // Setup real-time search filter
         const resourceSearch = document.getElementById('resource-search');
         if (resourceSearch) {
@@ -1697,10 +1703,102 @@ function initFleetHub() {
 
 // Live HQ Status Timer
 setInterval(() => {
-  const el = document.getElementById('live-hq-time');
-  if(el) {
-    const d = new Date();
-    const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    el.innerText = new Intl.DateTimeFormat('en-US', options).format(d) + ' IST';
-  }
+    const el = document.getElementById('live-hq-time');
+    if (el) {
+        const d = new Date();
+        const options = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        el.innerText = new Intl.DateTimeFormat('en-US', options).format(d) + ' IST';
+    }
 }, 1000);
+
+// â”€â”€ AI CHAT HANDLER (calls /api/ask-ai with SSE streaming) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+async function handleAiChatSubmit(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const input = form.querySelector('input[name="question"], textarea[name="question"], #ai-chat-input');
+    const responseContainer = document.getElementById('ai-chat-response');
+    const sendBtn = form.querySelector('button[type="submit"]');
+
+    if (!input || !input.value.trim()) return;
+
+    const question = input.value.trim();
+    input.value = '';
+    if (sendBtn) sendBtn.disabled = true;
+
+    // Append user message to response container
+    if (responseContainer) {
+        const userMsg = document.createElement('div');
+        userMsg.className = 'ai-user-msg';
+        userMsg.innerHTML = `<span class="ai-user-label">You:</span> ${escapeHtml(question)}`;
+        responseContainer.appendChild(userMsg);
+
+        const botMsg = document.createElement('div');
+        botMsg.className = 'ai-bot-msg';
+        botMsg.innerHTML = `<span class="ai-bot-label">AI:</span> <span class="ai-response-text"></span><span class="ai-cursor">â–Œ</span>`;
+        responseContainer.appendChild(botMsg);
+        responseContainer.scrollTop = responseContainer.scrollHeight;
+
+        const responseText = botMsg.querySelector('.ai-response-text');
+        const cursor = botMsg.querySelector('.ai-cursor');
+
+        try {
+            const res = await fetch('/api/ask-ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question })
+            });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({ error: `Error ${res.status}` }));
+                responseText.textContent = err.error || 'Something went wrong.';
+                cursor.remove();
+                return;
+            }
+
+            // Handle streaming response (SSE / chunked)
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            let fullText = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); // keep incomplete line
+
+                for (const line of lines) {
+                    if (!line.startsWith('data:')) continue;
+                    const data = line.slice(5).trim();
+                    if (data === '[DONE]') continue;
+                    try {
+                        const parsed = JSON.parse(data);
+                        // Anthropic streaming format
+                        if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+                            fullText += parsed.delta.text;
+                            responseText.textContent = fullText;
+                            responseContainer.scrollTop = responseContainer.scrollHeight;
+                        }
+                    } catch (_) { /* skip parse errors */ }
+                }
+            }
+
+            cursor.remove();
+            if (!fullText) responseText.textContent = 'No response received.';
+
+        } catch (err) {
+            responseText.textContent = `Error: ${err.message}`;
+            cursor.remove();
+        } finally {
+            if (sendBtn) sendBtn.disabled = false;
+            responseContainer.scrollTop = responseContainer.scrollHeight;
+        }
+    }
+}
+
+function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
