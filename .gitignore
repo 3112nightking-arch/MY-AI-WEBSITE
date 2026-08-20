@@ -19,3 +19,7 @@ oceanscience-deploy-*.zip
 # Deploy branch worktree (see update-deploy-branch.sh)
 .deploy-worktree/
 oceanscience-delta-*.zip
+
+# Claude Code local/config (keep commands/ tracked)
+.claude/launch.json
+.claude/settings.local.json
