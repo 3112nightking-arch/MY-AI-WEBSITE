@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Ocean Science & Surveying Pvt. Ltd. â€” Leading provider of offshore hydrographic, geophysical and geotechnical survey services across India and the Middle East.">
+        content="Ocean Science & Surveying Pvt. Ltd. — Leading provider of offshore hydrographic, geophysical and geotechnical survey services across India and the Middle East.">
     <meta name="keywords"
         content="ocean survey, hydrographic survey, offshore survey, marine survey, geophysical survey, India">
     <meta name="author" content="Ocean Science & Surveying Pvt. Ltd.">
@@ -40,6 +40,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
 
@@ -148,7 +149,7 @@
         body {
             background: linear-gradient(180deg, var(--site-bg) 0%, var(--site-bg-alt) 100%);
             color: var(--site-text);
-            font-family: 'Instrument Sans', system-ui, sans-serif;
+            font-family: 'Geist', 'Instrument Sans', system-ui, sans-serif;
         }
 
         h1,
@@ -157,7 +158,7 @@
         h4,
         h5,
         h6 {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Geist', 'Space Grotesk', sans-serif;
             letter-spacing: -0.01em;
         }
 
@@ -844,83 +845,86 @@
 
         <!-- HOME PAGE -->
         <section id="page-home" class="page-content active">
-            <div id="hero-slider" class="relative overflow-x-hidden pb-0 md:pb-[150px]">
-                <!-- Slides Container -->
-                <div id="slides-container" class="flex transition-transform duration-700 ease-in-out"
-                    style="transform: translateX(0%);">
+            <div id="hero-slider" class="relative overflow-x-hidden pb-0 md:pb-[150px] min-h-[100vh] bg-black font-geist">
+                <!-- Slides Container (z-10) -->
+                <div id="slides-container" class="relative z-10 flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
+                    
                     <!-- Slide 1 -->
-                    <div class="w-full flex-shrink-0 relative active-slide">
-                        <div class="hero-slide-bg absolute inset-0 z-0 bg-cover bg-center"
-                            data-bg="./IMAGES/HOME/89989898.png"
-                            style="background-image: url('./IMAGES/HOME/89989898.png');">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r from-[#242424]/95 via-[#242424]/50 to-transparent">
-                            </div>
-                        </div>
-                        <div class="relative z-10 flex flex-col justify-start md:justify-center px-6 lg:px-16 min-h-[100svh] pt-28 md:pt-24 pb-10">
+                    <div class="w-full flex-shrink-0 relative active-slide min-h-[100vh]">
+                        <!-- Slide 1 Background (Moving vessel on the surface) -->
+                        <img
+                            src="./IMAGES/HOME/survey_vessel_towed_fish.png"
+                            alt="Ocean Survey Vessel Cruising"
+                            class="absolute inset-0 h-full w-full object-cover object-center z-0"
+                        />
+                        <div class="absolute inset-0 bg-black/45 pointer-events-none z-0"></div>
+
+                        <div class="relative z-10 flex flex-col justify-start md:justify-center px-6 lg:px-16 min-h-[100vh] pt-28 md:pt-24 pb-10">
                             <div class="max-w-4xl">
-                                <div class="flex items-center gap-4 mb-8">
-                                    <div class="w-12 h-[2px] bg-[#ff6b00]"></div>
-                                    <span class="text-white font-bold tracking-[0.2em] text-[9px] uppercase">Ocean
-                                        Science & Surveying Pvt. Ltd.</span>
+                                <div class="flex items-center gap-4 mb-6 animate-[fadeSlideUp_0.8s_ease_0.2s_both]">
+                                    <div class="w-12 h-[2px] bg-[#22d3ee]"></div>
+                                    <span class="text-white font-bold tracking-[0.2em] text-[9px] uppercase">Ocean Science & Surveying Pvt. Ltd.</span>
                                 </div>
-                                <h1 +
-                                    class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-8">
+                                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-8 animate-[fadeSlideUp_0.8s_ease_0.4s_both]">
                                     <span class="text-white block">Decoding the</span>
                                     <span class="text-white block">seabed.</span>
                                     <span class="text-gray-400 block">Enabling the marine</span>
                                     <span class="text-gray-400 block">economy.</span>
                                 </h1>
-                                <p class="text-gray-300 text-sm md:text-base max-w-xl pr-8 mb-8 md:mb-12 leading-relaxed">
-                                    Delivering high-resolution hydrographic, geophysical, and geotechnical data for
-                                    critical offshore infrastructure across 22 countries.</p>
-                                <div class="flex flex-col sm:flex-row gap-4">
+                                <p class="text-gray-300 text-sm md:text-base max-w-xl pr-8 mb-8 md:mb-12 leading-relaxed animate-[fadeSlideUp_0.8s_ease_0.7s_both]">
+                                    Delivering high-resolution hydrographic, geophysical, and geotechnical data for critical offshore infrastructure across 22 countries.</p>
+                                <div class="flex flex-col sm:flex-row gap-4 animate-[fadeSlideUp_0.8s_ease_0.9s_both]">
                                     <button onclick="navigateTo('projects')"
-                                        class="bg-[#ff6b00] hover:bg-[#f59e0b] text-[#121212] font-bold text-xs tracking-wide py-4 px-8 rounded-sm transition-colors flex items-center justify-center gap-2">Explore
-                                        Our Projects <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                                        class="bg-[#22d3ee] hover:bg-[#38bdf8] text-black font-bold text-xs tracking-wide py-4 px-8 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg">
+                                        Explore Our Projects <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                    </button>
                                     <button onclick="navigateTo('services')"
-                                        class="bg-[#242424] hover:bg-[#242424] border border-gray-700 text-white font-bold text-xs tracking-wide py-4 px-8 rounded-sm transition-colors">Our
-                                        Services</button>
+                                        class="bg-slate-900/60 hover:bg-slate-800/80 border border-slate-700/80 text-white font-bold text-xs tracking-wide py-4 px-8 rounded-lg transition-colors">
+                                        Our Services
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <!-- Slide 2 -->
-                    <div class="w-full flex-shrink-0 relative active-slide">
-                        <div class="hero-slide-bg absolute inset-0 z-0 bg-cover bg-center"
-                            data-bg="./IMAGES/HOME/7559391310.png">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r from-[#242424]/95 via-[#242424]/50 to-transparent">
-                            </div>
-                        </div>
-                        <div class="relative z-10 flex flex-col justify-start md:justify-center px-6 lg:px-16 min-h-[100svh] pt-28 md:pt-24 pb-10">
+                    <div class="w-full flex-shrink-0 relative min-h-[100vh]">
+                        <!-- Slide 2 Background (Underwater ROV / subsea crawler equipment) -->
+                        <img
+                            src="./IMAGES/HOME/underwater_rov_equipment.jpg"
+                            alt="Subsea ROV Survey Operations"
+                            class="absolute inset-0 h-full w-full object-cover object-center z-0"
+                        />
+                        <div class="absolute inset-0 bg-black/45 pointer-events-none z-0"></div>
+
+                        <div class="relative z-10 flex flex-col justify-start md:justify-center px-6 lg:px-16 min-h-[100vh] pt-28 md:pt-24 pb-10">
                             <div class="max-w-4xl">
-                                <div class="flex items-center gap-4 mb-8">
-                                    <div class="w-12 h-[2px] bg-[#ff6b00]"></div>
-                                    <span class="text-white font-bold tracking-[0.2em] text-[9px] uppercase">Ocean
-                                        Science & Surveying Pvt. Ltd.</span>
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div class="w-12 h-[2px] bg-[#22d3ee]"></div>
+                                    <span class="text-white font-bold tracking-[0.2em] text-[9px] uppercase">Ocean Science & Surveying Pvt. Ltd.</span>
                                 </div>
-                                <h1 +
-                                    class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-8">
+                                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-8">
                                     <span class="text-white block">Innovative Offshore</span>
                                     <span class="text-gray-400 block">Solutions for </span>
                                     <span class="text-gray-400 block">the Marine</span>
                                     <span class="text-gray-400 block">Industry.</span>
                                 </h1>
                                 <p class="text-gray-300 text-sm md:text-base max-w-xl pr-8 mb-8 md:mb-12 leading-relaxed">
-                                    Ocean Science & Surveying Pvt. Ltd. provides comprehensive Offshore surveying and
-                                    support for a variety of sectors, dedicated to creating a safer world.</p>
+                                    Ocean Science & Surveying Pvt. Ltd. provides comprehensive Offshore surveying and support for a variety of sectors, dedicated to creating a safer world.</p>
                                 <div class="flex flex-col sm:flex-row gap-4">
                                     <button onclick="navigateTo('projects')"
-                                        class="bg-[#ff6b00] hover:bg-[#f59e0b] text-[#121212] font-bold text-xs tracking-wide py-4 px-8 rounded-sm transition-colors flex items-center justify-center gap-2">Explore
-                                        Our Projects <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                                        class="bg-[#22d3ee] hover:bg-[#38bdf8] text-black font-bold text-xs tracking-wide py-4 px-8 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg">
+                                        Explore Our Projects <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                    </button>
                                     <button onclick="navigateTo('services')"
-                                        class="bg-[#242424] hover:bg-[#242424] border border-gray-700 text-white font-bold text-xs tracking-wide py-4 px-8 rounded-sm transition-colors">Our
-                                        Services</button>
+                                        class="bg-slate-900/60 hover:bg-slate-800/80 border border-slate-700/80 text-white font-bold text-xs tracking-wide py-4 px-8 rounded-lg transition-colors">
+                                        Our Services
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Hero News Widget -->
@@ -954,7 +958,7 @@
 
                 <!-- Slider Controls -->
                 <div class="absolute z-20 bottom-[240px] md:bottom-[170px] left-6 lg:left-16 flex gap-2">
-                    <button id="slide-dot-0" class="w-12 h-[3px] bg-[#ff6b00] transition-colors"></button>
+                    <button id="slide-dot-0" class="w-12 h-[3px] bg-[#22d3ee] transition-colors"></button>
                     <button id="slide-dot-1" class="w-12 h-[3px] bg-gray-600 transition-colors"></button>
                 </div>
                 <button id="prev-slide"
@@ -969,7 +973,7 @@
                     class="absolute bottom-0 left-0 w-full border-t border-gray-800/60 z-30 bg-[#0b1120]/70 backdrop-blur-md translate-y-32 md:translate-y-[150px]">
                     <!-- Subtle glow effect over the first stat -->
                     <div
-                        class="absolute top-0 left-[10%] md:left-[12%] w-[30%] md:w-[15%] h-[2px] bg-orange-400 shadow-[0_0_30px_15px_rgba(251,146,60,0.3)]">
+                        class="absolute top-0 left-[10%] md:left-[12%] w-[30%] md:w-[15%] h-[2px] bg-[#22d3ee] shadow-[0_0_30px_15px_rgba(34,211,238,0.3)]">
                     </div>
                     <div class="max-w-7xl mx-auto px-6 lg:px-16 py-10 md:py-12">
                         <div
@@ -980,7 +984,7 @@
                                     class="text-4xl md:text-5xl font-extrabold text-white mb-3 flex items-center tracking-tight">
                                     <span class="counter-number" id="projects-delivered-counter"
                                         data-target="0">0</span><span
-                                        class="text-orange-400 text-2xl md:text-3xl ml-1 font-bold">+</span>
+                                        class="text-[#22d3ee] text-2xl md:text-3xl ml-1 font-bold">+</span>
                                 </h3>
                                 <p
                                     class="text-gray-400 text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-center">
@@ -991,7 +995,7 @@
                                 <h3
                                     class="text-4xl md:text-5xl font-extrabold text-white mb-3 flex items-center tracking-tight">
                                     <span class="counter-number" data-target="22">0</span><span
-                                        class="text-orange-400 text-2xl md:text-3xl ml-1 font-bold">+</span>
+                                        class="text-[#22d3ee] text-2xl md:text-3xl ml-1 font-bold">+</span>
                                 </h3>
                                 <p
                                     class="text-gray-400 text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-center">
@@ -1002,7 +1006,7 @@
                                 <h3
                                     class="text-4xl md:text-5xl font-extrabold text-white mb-3 flex items-center tracking-tight">
                                     <span class="counter-number" data-target="20">0</span><span
-                                        class="text-orange-400 text-2xl md:text-3xl ml-1 font-bold">+</span>
+                                        class="text-[#22d3ee] text-2xl md:text-3xl ml-1 font-bold">+</span>
                                 </h3>
                                 <p
                                     class="text-gray-400 text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-center">
@@ -1013,7 +1017,7 @@
                                 <h3
                                     class="text-4xl md:text-5xl font-extrabold text-white mb-3 flex items-center tracking-tight">
                                     <span class="counter-number" data-target="99">0</span><span
-                                        class="text-orange-400 text-2xl md:text-3xl ml-1 font-bold">%</span>
+                                        class="text-[#22d3ee] text-2xl md:text-3xl ml-1 font-bold">%</span>
                                 </h3>
                                 <p
                                     class="text-gray-400 text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-center">
@@ -1817,7 +1821,7 @@
                     <div class="lg:col-span-8">
                         <i data-lucide="quote" class="w-12 h-12 text-[#ff6b00]/40 mb-6"></i>
                         <h3 class="text-2xl md:text-4xl font-bold text-white mb-6 leading-tight">"Our commitment to
-                            precision and safety is not just a standardâ€”it's the foundation of everything we do in the
+                            precision and safety is not just a standard—it's the foundation of everything we do in the
                             offshore industry."</h3>
                         <p class="text-gray-400 text-lg mb-8 leading-relaxed">For over two decades, Ocean Science &
                             Surveying
@@ -3161,7 +3165,7 @@
                                                 Area Size / Route Length</label>
                                             <input type="text" id="rfq-size"
                                                 class="bg-[var(--site-bg)] border-2 border-gray-200 p-5 outline-none focus:border-[var(--site-accent)] transition-all text-lg rounded-2xl text-[var(--site-text)] placeholder-gray-400 focus:shadow-[0_0_0_4px_var(--site-accent-glow)]"
-                                                placeholder="e.g. 15 kmÂ² or 45 km route length">
+                                                placeholder="e.g. 15 km² or 45 km route length">
                                         </div>
                                         <div class="flex flex-col gap-3">
                                             <label
@@ -3298,7 +3302,7 @@
                                 <circle cx="4" cy="4" r="2"></circle>
                             </svg>
                         </a>
-                        <!-- X (Twitter) link â€” hidden until a profile exists.
+                        <!-- X (Twitter) link — hidden until a profile exists.
                              To enable: replace href="#" with the profile URL and delete the style="display:none" attribute. -->
                         <a href="#" id="footer-x-link" style="display:none"
                             class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-300">
@@ -3504,7 +3508,6 @@
         ];
 
         const news = [
-            { cat: 'PROJECT', date: 'Aug 17, 2026', title: 'New Project: Survey Services for Submarine Cable Route Surveys in Abu Dhabi', sum: 'Ocean Science & Surveying Pvt. Ltd. has been awarded a contract by E-Marine PJSC for the hiring of survey services for a survey project in Abu Dhabi. The scope of work involves comprehensive submarine cable route surveys, further strengthening our presence in the Middle East and our expertise in supporting critical submarine cable infrastructure projects.', time: '3 min', img: './IMAGES/NEWS PAGE/ABU DHABI PROJECT.PNG' },
             { cat: 'INNOVATION', date: 'June 28, 2026', title: 'OSS Collaborates with IIT Delhi on Advanced Singlebeam Echosounder Development', sum: 'Ocean Science & Surveying Pvt. Ltd. is proud to announce a strategic collaboration with the Indian Institute of Technology (IIT) Delhi to co-develop a next-generation Singlebeam Echosounder. This partnership aims to enhance hydrographic surveying capabilities with cutting-edge, domestically engineered technology.', time: '4 min', img: './IMAGES/NEWS PAGE/IITDELHI.png' },
             { cat: 'PROJECT', date: 'June 15, 2026', title: 'New Project: Pipeline Depth Monitoring Survey for HVJ Pipeline Network', sum: 'Ocean Science & Surveying Pvt. Ltd. has been awarded a contract by GAIL India Ltd. The scope of work involves the hiring of contract services for pipeline depth monitoring surveys at perennial river crossing locations under the HVJ Pipeline Network.', time: '3 min', img: './IMAGES/NEWS PAGE/Pipeline depth survey overview infographic.png' },
             { cat: 'PROJECT', date: 'June 15, 2026', title: 'New Project: Pipeline Profile Survey for GAIL Maharashtra NG Pipeline Network', sum: 'Ocean Science & Surveying Pvt. Ltd. has been awarded a contract by GAIL India Ltd. The scope of work includes the hiring of contract services for pipeline profile surveys utilizing Bathymetry, Sub-Bottom Profiler, and Side Scan Sonar for pipeline river crossings across the GAIL Maharashtra Natural Gas (NG) Pipeline Network.', time: '3 min', img: './IMAGES/NEWS PAGE/GAIL MAHARASHTRA NG PIPELINE.png' },
@@ -3582,7 +3585,7 @@
         ];
 
         const resourcesData = [
-            { id: 'res-01', cat: 'Brochure', title: 'Ocean Science â€” Company Brochure 2026', desc: 'An overview of our six service lines, certifications, fleet of survey instruments and selected case studies from the past five years.', format: 'PDF', size: '8.4 MB', pages: '28 pages', date: '15 Jan 2026', icon: 'book-open' },
+            { id: 'res-01', cat: 'Brochure', title: 'Ocean Science — Company Brochure 2026', desc: 'An overview of our six service lines, certifications, fleet of survey instruments and selected case studies from the past five years.', format: 'PDF', size: '8.4 MB', pages: '28 pages', date: '15 Jan 2026', icon: 'book-open' },
             { id: 'res-02', cat: 'Capability Sheet', title: 'Bathymetric & Hydrographic Survey Capabilities', desc: 'Detailed capability statement covering multibeam, singlebeam, ADCP and tide-gauge spreads, IHO Order compliance and recent deliverables.', format: 'PDF', size: '2.1 MB', pages: '8 pages', date: '2 Dec 2025', icon: 'file-text' },
             { id: 'res-03', cat: 'Capability Sheet', title: 'Geophysical Survey Capabilities', desc: 'Side-scan sonar, sub-bottom profiler and magnetometer service offering with sample data extracts and processing workflow.', format: 'PDF', size: '3.6 MB', pages: '10 pages', date: '2 Dec 2025', icon: 'file-text' },
             { id: 'res-04', cat: 'Capability Sheet', title: 'Marine Geotechnical Investigation Capabilities', desc: 'Offshore drilling, CPT, vibrocoring and in-house soil laboratory capabilities with reference to API RP 2GEO standards.', format: 'PDF', size: '4.2 MB', pages: '12 pages', date: '2 Dec 2025', icon: 'file-text' },
@@ -3596,7 +3599,6 @@
         let currentResourceSearch = '';
 
         const projectsData = [
-            { company: "E-Marine PJSC", projectName: "Hiring of Survey Services for Survey Project in Abu Dhabi (Submarine Cable Route Surveys)", location: "Abu Dhabi", country: "UAE", industry: "Submarine Cable Contractors", region: "Middle East", type: "Submarine Cable Route Surveys", services: ["Submarine Cable Route Surveys"], date: "17-08-2026", lat: 24.4539, lng: 54.3773, description: "Hiring of Survey Services for Survey Project in Abu Dhabi (Submarine Cable Route Surveys)." },
             { company: "Gail (India) Limited", projectName: "Hiring of services for side scan sonar survey in major waterbody crossings of ng pipelines in KG basin", location: "KG BASIN, andhra pradesh, INDIA", country: "India", industry: "Oil & Gas", region: "Asia", type: "Geophysical Survey", services: ["Geophysical Survey"], date: "01-04-2026", lat: 16.9891, lng: 82.2475, description: "Hiring of services for side scan sonar survey in major waterbody crossings of ng pipelines in KG basin." },
             { company: "Larsen & Toubro Limited (Construction)", projectName: "Geophysical Survey at Ullas River", location: "Ullas River, Maharashtra", country: "India", industry: "Engineering & Construction", region: "Asia", type: "Geophysical Survey", services: ["Geophysical Survey"], date: "01-02-2026", completed: "Completed in Mar 2026", lat: 19.2183, lng: 73.0525, description: "Geophysical Survey at Ullas River. (Completed in Mar 2026)" },
             { company: "E-Marine PJSC", projectName: "Hiring of Dive Swim, Topographic & Inshore Survey Services at Barka, Oman.", location: "Oman", country: "Oman", industry: "Submarine Cable Contractors", region: "Middle East", type: "Topographic AND Inshore Survey", services: ["Topographic Survey", "Bathymetry Survey"], date: "01-11-2025", completed: "Completed in Feb 2026", lat: 23.6000, lng: 58.5000, description: "Hiring of Dive Swim, Topographic & Inshore Survey Services at Barka, Oman (Completed in Feb 2026)" },
@@ -4465,7 +4467,7 @@
 
                     setTimeout(() => {
                         const content = "========================================================================\n" +
-                            "OCEAN SCIENCE & SURVEYING PVT. LTD. â€” SECURE DOCUMENT PORTAL\n" +
+                            "OCEAN SCIENCE & SURVEYING PVT. LTD. — SECURE DOCUMENT PORTAL\n" +
                             "========================================================================\n\n" +
                             "Document Title: " + resource.title + "\n" +
                             "Category      : " + resource.cat + "\n" +
@@ -4482,7 +4484,7 @@
                             "Phone: +91 22 2759 5100\n" +
                             "Address: Tower #8, CBD Belapur, Navi Mumbai - 400 614, India\n" +
                             "------------------------------------------------------------------------\n" +
-                            "Â© 2026 Ocean Science & Surveying Pvt. Ltd. All Rights Reserved.\n" +
+                            "© 2026 Ocean Science & Surveying Pvt. Ltd. All Rights Reserved.\n" +
                             "========================================================================";
                         const blob = new Blob([content], { type: 'text/plain' });
                         const url = URL.createObjectURL(blob);
@@ -4685,7 +4687,7 @@
                 d.style.borderColor = 'rgba(255,255,255,0.08)';
             });
 
-            // open the clicked one (unless it was already open â€” then leave all closed)
+            // open the clicked one (unless it was already open — then leave all closed)
             if (!isOpen) {
                 bio.style.maxHeight = bio.scrollHeight + 40 + 'px';
                 bio.style.opacity = '1';
@@ -4825,7 +4827,7 @@
             "Mazagon Dock Shipbuilders Limited": "dark",
             "The Shipping Corporation Of India Ltd": "dark",
             // Dark/colourful marks whose light surrounds fool the luminance probe into a
-            // navy chip â€” force white so they stay legible.
+            // navy chip — force white so they stay legible.
             "WAPCOS Limited": "dark",
             "Engineers India Limited": "dark",
             // Ben Line's official mark carries a white "BEN LINE" wordmark (built for a dark
@@ -4864,13 +4866,13 @@
                     }
                     if (!n) return;
                     // Dark navy chip is ONLY for a light/white mark drawn on a transparent
-                    // background. A logo with a baked-in (opaque) background â€” white or
-                    // coloured â€” must sit on a white chip so it blends instead of showing
+                    // background. A logo with a baked-in (opaque) background — white or
+                    // coloured — must sit on a white chip so it blends instead of showing
                     // as a floating rectangle.
                     const isTransparentMark = (transparent / total) > 0.25;
                     setChipTheme(card, (isTransparentMark && (lum / n) > 135) ? 'light' : 'dark');
                 } catch (e) {
-                    /* cross-origin tainted â€” keep the manual/default theme */
+                    /* cross-origin tainted — keep the manual/default theme */
                 }
             };
             probe.src = img.currentSrc || img.src;
@@ -4899,7 +4901,7 @@
             if (rows.some(r => !r) || rows[0].scrollWidth < 10) return;
             clientsAnimated = true;
             const dir = ['marqueeLeft', 'marqueeLeft', 'marqueeLeft', 'marqueeLeft'];
-            const speed = [24, 24, 24, 24]; // uniform â€” all rows drift left together as one calm block
+            const speed = [24, 24, 24, 24]; // uniform — all rows drift left together as one calm block
             rows.forEach((row, i) => {
                 const dur = (row.scrollWidth / 3) / speed[i];
                 row.style.animation = `${dir[i]} ${dur}s linear infinite`;
@@ -5408,7 +5410,7 @@
             }
 
             // Define high-performance basemaps
-            // Esri Dark Gray Canvas (base + reference labels) â€” matches the site's dark navy theme
+            // Esri Dark Gray Canvas (base + reference labels) — matches the site's dark navy theme
             const esriDarkBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
                 maxZoom: 16,
@@ -5422,7 +5424,7 @@
             });
             const darkRadar = L.layerGroup([esriDarkBase, esriDarkLabels]);
 
-            // GEBCO global bathymetry grid (free WMS) â€” real depth-shaded seafloor relief
+            // GEBCO global bathymetry grid (free WMS) — real depth-shaded seafloor relief
             const gebco = L.tileLayer.wms('https://wms.gebco.net/mapserv?', {
                 layers: 'GEBCO_LATEST',
                 format: 'image/png',
@@ -5647,7 +5649,7 @@
                         // Completed Step
                         if (badge) {
                             badge.className = "w-5 h-5 rounded-full bg-slate-900 border border-[#22d3ee] text-[#22d3ee] flex items-center justify-center text-[9px] font-bold transition-all";
-                            badge.innerHTML = 'Ã¢Å“â€œ';
+                            badge.innerHTML = 'âœ“';
                         }
                         if (label) label.className = "text-[#22d3ee] transition-colors";
                     } else if (i === currentRfqStep) {
@@ -6000,7 +6002,7 @@ Generated via Ocean Science RFQ Survey Builder`;
                     </div>
                     <div class="border-t border-slate-800/80 pt-3 mt-4 flex items-center justify-between text-[9px] text-slate-500 font-bold uppercase tracking-widest tech-label">
                         <span>INVENTORY ID: ${item.id.toUpperCase()}</span>
-                        <span class="text-[#ff6b00] group-hover:underline">Inspect Specs Ã¢â€ â€™</span>
+                        <span class="text-[#ff6b00] group-hover:underline">Inspect Specs â†’</span>
                     </div>
                 </div>
                 `;
@@ -6164,23 +6166,30 @@ Generated via Ocean Science RFQ Survey Builder`;
         }
 
         function initSlider() {
-            if (!document.getElementById('hero-slider')) return;
+            const nextBtn = document.getElementById('next-slide');
+            const prevBtn = document.getElementById('prev-slide');
+            const slider = document.getElementById('hero-slider');
 
-            document.getElementById('next-slide').addEventListener('click', () => { goToSlide(currentSlide + 1); startSlider(); });
-            document.getElementById('prev-slide').addEventListener('click', () => { goToSlide(currentSlide - 1); startSlider(); });
-            document.querySelectorAll('[id^="slide-dot-"]').forEach((dot, index) => dot.addEventListener('click', () => { goToSlide(index); startSlider(); }));
+            if (nextBtn) nextBtn.addEventListener('click', () => { goToSlide(currentSlide + 1); startSlider(); });
+            if (prevBtn) prevBtn.addEventListener('click', () => { goToSlide(currentSlide - 1); startSlider(); });
+            
+            document.querySelectorAll('[id^="slide-dot-"]').forEach((dot, index) => {
+                dot.addEventListener('click', () => { goToSlide(index); startSlider(); });
+            });
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        startSlider();
-                    } else {
-                        stopSlider();
-                    }
-                });
-            }, { threshold: 0.1 });
+            if (slider) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            startSlider();
+                        } else {
+                            stopSlider();
+                        }
+                    });
+                }, { threshold: 0.1 });
 
-            observer.observe(document.getElementById('hero-slider'));
+                observer.observe(slider);
+            }
         }
 
 
