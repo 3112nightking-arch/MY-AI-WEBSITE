@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap');
 
 /* ====================================================================
    PRELOADER / LOADING SCREEN
@@ -1392,4 +1393,20 @@ input, select, textarea {
     background-color: var(--site-accent-soft) !important;
     color: var(--site-accent) !important;
     border: 1px solid var(--site-accent-glow) !important;
+}
+
+/* Custom font and animation updates from index.css */
+.font-geist {
+    font-family: 'Geist', sans-serif;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
